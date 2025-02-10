@@ -40,7 +40,7 @@
                                             <a href="{{ route('contacts.edit', $contact->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                         </div>
                                         <div class="col-auto">
-                                            <form action="{{ route('contacts.destroy', $contact->id) }}" method="post">
+                                            <form action="{{ route('contacts.destroy', $contact->id) }}" method="post" onsubmit="return confirmDelete(event)">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -83,7 +83,7 @@
                                             <a href="/contacts/${contact.id}/edit" class="btn btn-warning btn-sm">Edit</a>
                                         </div>
                                         <div class="col-auto">
-                                            <form action="/contacts/${contact.id}" method="post">
+                                            <form action="/contacts/${contact.id}" method="post onsubmit="return confirmDelete(event)"">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -100,5 +100,14 @@
                 });
         }
     });
+    function confirmDelete(event) {
+    event.preventDefault();
+
+    if (confirm("Are you sure you want to delete this contact?")) {
+        event.target.submit();
+    } else {
+        return false;
+    }
+}
 </script>
 @endsection
